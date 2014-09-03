@@ -1,0 +1,67 @@
+#!/bin/sh
+
+# shell script name
+# short description pf shell script
+
+# Copyright 2014 James An
+
+# THIS PROGRAM is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Global constants
+declare -r    GLOBAL_CONST_STR="some string"
+declare -r -i GLOBAL_CONST_INT=10*10
+declare -r -a GLOBAL_CONST_ARR=()
+
+source utility-library
+
+# short description of function
+# $1 - description of 1st paramater
+# $2 - description of 2nd paramater
+some_function() {
+    # parameters extraction
+    local    param_1st="$1"; shift
+    local -i param_2nd=5+$1; shift
+
+    # always use `mktemp` for temporary files`
+    local output_file=`mktemp`
+    # run commands in a subshell with exec and track PID with an int variable
+    (eval $command) >& $output_file &
+    local -i bg_job=$!
+
+    # examples
+    dialog --title "$title" --tailbox $output_file $height $OUTPUT_DIALOG_WIDTH
+
+    # TODO my lame way of checking if a process is running on linux, anyone has a better way??
+    # my way of specifying a 'TODO' is in the above line
+    if [ -d /proc/$bg_job ]; then
+        # if the process is stubborn, use 'kill -9'
+        kill $bg_job || kill -9 $bg_job >& /dev/null
+    fi
+    # wait for process to end itself
+    wait $bg_job
+
+    # not cleaning up your temporary files is similar to a memory leak in C++
+    rm -f $output_file
+}
+
+main() {
+}
+
+# invoke main function if this script is executed as a command
+if [ "$CMD" = ${BASH_SOURCE##*/} ]; then
+    main "$@"
+# otherwise remove main function
+else
+    unset main
+fi

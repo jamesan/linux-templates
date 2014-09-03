@@ -1,0 +1,93 @@
+# Maintainer: James An <james@jamesan.ca>
+
+# PKGBUILD-git
+# template for writing a PKGBUILD file with a git VCS source
+
+# Copyright 2014 James An
+
+# THIS PROGRAM is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+_pkgname=TODO
+pkgname="$_pkgname-git"
+pkgver=TODO
+pkgrel=1
+pkgdesc="TODO"
+arch=('i686' 'x86_64' 'any')
+url="http://TODO/$_pkgname"
+license=('GPL')
+depends=()
+makedepends=('git')
+provides=("$_pkgname")
+conflicts=("$_pkgname")
+options=()
+install=
+source=("$_pkgname"::"git+https://github.com/jamesan/$_pkgname.git")
+md5sums=('SKIP')
+
+pkgver() {
+    cd "$_pkgname"
+    (
+        set -o pipefail
+        git describe --long --tag | sed -r 's/([^-]*-g)/r\1/;s/-/./g' ||
+        printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+    )
+}
+
+prepare() {
+    cd "$_pkgname"
+
+    # Apply all patches to the source code root directory
+    for file in ../*.patch; do
+        patch -p1 -i $file
+    done
+}
+
+build() {
+    cd "$_pkgname"
+
+    ./autogen.sh
+    ./configure --prefix=/usr
+    make
+}
+
+check() {
+    cd "$_pkgname"
+
+    make -k check
+}
+
+package() {
+    cd "$_pkgname"
+
+    make DESTDIR="$pkgdir/" install
+
+    # pruning unnecessary files
+    rm -rf "$pkgdir/etc/rc.d"
+    rm -rf "$pkgdir/etc/init.d"
+
+    # installing package into opt
+    install -m755 -d "$pkgdir/opt"
+    cp -R "$_pkgname" "$pkgdir/opt/"
+
+    # installing doc files
+    install -m755 -d "$pkgdir/usr/share/doc/$_pkgname"
+    cp -R doc/* "$pkgdir/usr/share/doc/$_pkgname"
+
+    # installing the license
+    install -D -m644 LICENSE*d "$pkgdir/usr/share/licenses/$_pkgname/LICENSE"
+
+    # correct file permissions (disabling file execution)
+    find "$pkgdir" -type f -exec chmod 0644 {} +
+    find "$pkgdir" -type d -exec chmod 0755 {} +
+}

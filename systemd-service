@@ -1,0 +1,78 @@
+#!/bin/sh
+
+# systemd-service
+# template for writing a systemd service unit
+
+# Copyright 2014 James An
+
+# THIS PROGRAM is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+[Unit]
+Description=Example Service Title
+Documentation=man:systemd.service(8) http://www.example.com
+#Requires=
+Wants=
+#BindsTo=
+#Conflicts=
+Before=
+After=
+#OnFailure=
+#AllowIsolate=
+#ConditionACPower=
+#ConditionNeedsUpdate=
+#ConditionPathExists=
+#ConditionPathExistsGlob=
+#ConditionPathIsDirectory=
+#ConditionPathIsSymbolicLink=
+#ConditionPathIsMountPoint=
+#ConditionPathIsReadWrite=
+#ConditionDirectoryNotEmpty=
+#ConditionFileNotEmpty=
+#ConditionFileIsExecutable=
+#ConditionNull=
+
+[Service]
+Type=
+#RemainAfterExit=
+#PIDFile=
+ExecStart=
+#ExecStartPre=
+#ExecStartPost=
+#ExecReload=
+ExecStop=
+#ExecStopPost=
+RestartSec=
+#TimeoutStartSec=
+#TimeoutStopSec=
+TimeoutSec=
+Restart=
+#WorkingDirectory=
+#User=
+#Group=
+#SupplementaryGroups=
+#Nice=
+Environment=
+EnvironmentFile=
+#StandardInput=
+#StandardOutput=
+#StandardError=
+#KillMode=
+#KillSignal=
+#SendSIGHUP=
+#SendSIGKILL=
+
+[Install]
+#Alias=
+WantedBy=
+#RequiredBy=
