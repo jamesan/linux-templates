@@ -1,0 +1,42 @@
+# Maintainer: James An <james@jamesan.ca>
+
+# PKGBUILD-python
+# template for writing a PKGBUILD file for a python module
+
+# Copyright 2014 James An
+
+# THIS PROGRAM is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+_pkgname=TODO
+pkgname="python-${_pkgname}"
+pkgver=TODO
+pkgrel=1
+pkgdesc='TODO'
+arch=('any')
+url="https://pypi.python.org/pypi/${_pkgname}/${_pkgver}"
+license=('GPL')
+depends=('python')
+makedepends=('python-pip' 'python-setuptools')
+options=(!emptydirs)
+install=
+source=("https://pypi.python.org/packages/source/${_pkgname:0:1}/${_pkgname}/${_pkgname}-${_pkgver}.zip")
+md5sums=()
+
+package() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+
+  python setup.py install --root="${pkgdir}/" --optimize=1
+  # OR
+  pip install --root="${pkgdir}/" --compile
+}
