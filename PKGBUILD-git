@@ -56,8 +56,7 @@ prepare() {
 build() {
     cd "$_pkgname"
 
-    ./autogen.sh
-    ./configure --prefix=/usr
+    ./autogen.sh --prefix=/usr
     make
 }
 

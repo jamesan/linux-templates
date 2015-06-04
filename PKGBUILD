@@ -51,8 +51,7 @@ build() {
     # cd $pkgname
     # cd $pkgver
 
-    ./autogen.sh
-    ./configure --prefix=/usr
+    ./autogen.sh --prefix=/usr
     make
 }
 
